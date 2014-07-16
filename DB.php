@@ -1483,7 +1483,7 @@ class DB
      *                              $columns = 'id, name'; $columns = '*';
      *
      * @param  string   $on         Required parameter : This is the ON part of 
-     *                              the join query. You write it as an string. 
+     *                              the join query. You write it as a string. 
      *                              Example: 'country.code = 
      *                              country_language.country_code';
      *
@@ -1899,7 +1899,8 @@ class DB
     /**
      * Deletes the row by provided $id or custom WHERE clause.
      *
-     * @param  array    $where      In case you are doing deletion using this 
+     * @param  array    $where      Optional parameter : 
+     *                              In case you are doing deletion using this 
      *                              parameter, you need to supply your condition 
      *                              as an associative array where array key will 
      *                              contain column name and operator, and array 
@@ -1911,7 +1912,8 @@ class DB
      *                              deleting by $id, $where parameter should NOT 
      *                              be specified.
      *
-     * @param  integer  $id         In case you are doing deletion by $id, you 
+     * @param  integer  $id         Optional parameter : 
+     *                              In case you are doing deletion by $id, you 
      *                              need to pass the id as deletion criteria.
      *                              If you are using custom $where, you should 
      *                              NOT specify the $id.
