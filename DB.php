@@ -6,7 +6,7 @@
  * @author Nenad Zivkovic <nenad@freetuts.org>
  * @link https://github.com/freetuts/DB-Class
  * @copyright 2014-present freetuts.org
- * @license http://www.freetuts.org/site/page?view=licensing
+ * @license http://freetuts.org/site/page?view=licensing
  */
 
 /**
