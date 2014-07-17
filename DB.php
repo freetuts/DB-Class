@@ -18,7 +18,7 @@
  * password and that would be it.
  *
  * You can find tutorial on how to use this class at: 
- * @link www.freetuts.org/post/2?title=How+to+use+freetuts.org+DB+class
+ * @link http://freetuts.org/tutorial/2?title=How+to+use+freetuts.org+DB+class
  * Class documentation is at Github: 
  * @link https://github.com/freetuts/DB-Class/wiki
  * 
@@ -1937,7 +1937,8 @@ class DB
             self::$sth->execute();
             self::$lastQuery = self::$sth;
             return self::$sth->rowCount();
-        } // we are deleting using custom WHERE
+        } 
+        // we are deleting using custom WHERE
         else
         {
             self::$sth = self::query("DELETE 
