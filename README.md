@@ -26,11 +26,12 @@ Queries the given table by provided parameters. It can use WHERE clause to speci
 
 *Required parameters:*
 
-- $columns - you need to pass the names of the columns you want to select, you can pass them as an array or as an string with comma-separated values. Also if you want to select all columns in table you can pass *. Examples: `$columns = array('id', 'name');` `$columns = 'id, name';` `$columns = '*';`
+- $columns - you need to pass the names of the columns you want to select, you can pass them as an array or as an string with comma-separated values. Also if you want to select all columns in table you can pass *. Examples: `$columns = array('id', 'name');` `$columns = 'id, name';` `$columns = " * ";`
 
 *Optional parameters:*
 
-- *$where* - you can specify the WHERE part of the query using an associative array, where keys will be the string parts of the statements, like: `'name ='`, and array values will be values for those conditions. Example: `['id >' => $id, ' AND price<' => $price]` will produce: `WHERE id > :value1 AND price < :value2`, where :value1 and :value2 will be replaced with bound parameters.
+- *$where* - you can specify the WHERE part of the query using an associative array, where keys will be the string parts of the statements, like: `'name ='`, and array values will be values for those conditions.  
+Example: `['id >' => $id, ' AND price<' => $price]` will produce: `WHERE id > :value1 AND price < :value2`, where :value1 and :value2 will be replaced with bound parameters.
 
 - *$order* - you can specify the ORDER BY clause.
 
@@ -66,7 +67,8 @@ Queries the given table by provided $id value. Id is considered to be an integer
 
 *Optional parameters*:
 
-- *$columns* - column names you want to select, ( in case you do not want all *). You can write them as an array or string with comma-separated values. Examples: `$columns = array('id', 'name');` `$columns = 'id, name';`
+- *$columns* - column names you want to select, ( in case you do not want all *). You can write them as an array or string with comma-separated values.  
+Examples: `$columns = array('id', 'name');` `$columns = 'id, name';`
 
 
 ### getGrouped() method:
@@ -75,7 +77,8 @@ Queries the given table and groups the results using the GROUP BY clause. User c
 
 *Required parameters*: 
 
-- *$columns* - you need to pass the names of the columns you want to select, you can pass them as an array or as an string with comma-separated values. Also if you want to select all columns in table you can pass *. Examples: `$columns = array('id', 'name');` `$columns = 'id, name';` `$columns = '*';`
+- *$columns* - you need to pass the names of the columns you want to select, you can pass them as an array or as an string with comma-separated values. Also if you want to select all columns in table you can pass *.  
+Examples: `$columns = array('id', 'name');` `$columns = 'id, name';` `$columns = '*';`
 
 - *$group* - you have to pass the name of the column you are grouping by your results.
 
@@ -83,7 +86,8 @@ Queries the given table and groups the results using the GROUP BY clause. User c
 
 - *$where* - see get() method for explanation.
 
-- *$having* - you can specify the HAVING part of the query using an associative array, where keys will be the string parts of the statements, like: `'SUM(tax) <='`, and array values will be values for those conditions. Example: `['SUM(tax) <' => $tax,' AND SUM(price) >' => $price]` will produce: `HAVING tax < :value1 AND price > :value2` , where :value1 and :value2 will be replaced with bound parameters.
+- *$having* - you can specify the HAVING part of the query using an associative array, where keys will be the string parts of the statements, like: `'SUM(tax) <='`, and array values will be values for those conditions.  
+Example: `['SUM(tax) <' => $tax,' AND SUM(price) >' => $price]` will produce: `HAVING tax < :value1 AND price > :value2` , where :value1 and :value2 will be replaced with bound parameters.
 
 - *$order*
 
@@ -168,7 +172,7 @@ Function that is calling create/update methods depending if condition is passed 
 
 *Required parameters*: 
 
-- *$columns* - array of key=>value pairs representing columns and values that will be updated/inserted Example: `$columns = ['username' => $username];` will produce: `SET username = johndoe;`, or whatever was inside $username.
+- *$columns* - array of key=>value pairs representing columns and values that will be updated/inserted  Example: `$columns = ['username' => $username];` will produce: `SET username = johndoe;`, or whatever was inside $username.
 
 *Optional parameters*:
 
@@ -179,4 +183,3 @@ Example: `$condition = ['username = ' => $username];` will produce: `WHERE usern
 ### showQuery() method:
 
 Method that is displaying last executed query. Please use only for debug/learn purpose. You should never display this information to end users.
-
