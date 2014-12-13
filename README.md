@@ -5,7 +5,7 @@ Freetuts.org "DB" class is a class that offers MySQL PDO connection and SQL
 abstraction functions for easier working with your database. 
 
 On our web site you can read our tutorial that is explaining how to use this class step by step: 
-http://www.freetuts.org/tutorial/view?id=1
+[Click to learn](http://www.freetuts.org/tutorial/view?id=1)
 
 Crash course
 ============
