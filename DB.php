@@ -6,7 +6,7 @@
  * @author Nenad Zivkovic <nenad@freetuts.org>
  * @link https://github.com/freetuts/DB-Class
  * @copyright 2014-present freetuts.org
- * @license http://freetuts.org/site/page?view=licensing
+ * @license http://www.freetuts.org/site/page?view=licensing
  */
 
 /**
@@ -17,24 +17,14 @@
  * require_once or auto load, set up your host, database name, username and 
  * password and that would be it.
  *
- * You can find tutorial on how to use this class at: 
- * @link http://freetuts.org/tutorial/2?title=How+to+use+freetuts.org+DB+class
- * Class documentation is at Github: 
- * @link https://github.com/freetuts/DB-Class/wiki
+ * You can find tutorial on how to use this class on: http://www.freetuts.org/
+ * Full class documentation is on Github at:
  * 
  */
 //------------------------------------------------------------------------------
 
 class DB
 {
-    //-------- your database setup --------//
-    private static $host     = 'localhost';
-    private static $database = 'example_db';
-    private static $charset  = 'utf8';
-    private static $username = 'root';
-    private static $password = 'root';
-    //-------------------------------------//
-    
     //-----------------------------------------------------------------------
     // Class specific properties, modify only if you know what you are doing.
     //-----------------------------------------------------------------------
@@ -55,22 +45,23 @@ class DB
     private static $leftTable;      // Left table in JOIN query.
     private static $rightTable;     // Right table in JOIN query.
     private static $joinType;       // Type of the JOIN... LEFT, RIGHT...
-    private static $lastQuery;      // The last executed SQL query.
+    private static $lastQuery;		// The last executed SQL query.
                                     // See showQuery();
 
     /**
      * Initializes the PDO database connection
+     * You can set you database params in some config file like in example provided.
      */
     function __construct()
     {
         // tries to connect
         try
         {
-            self::$dbh = new PDO("mysql:host=" . self::$host . ";
-                                  dbname="     . self::$database . ";
-                                  charset="    . self::$charset . "", 
-                                                 self::$username, 
-                                                 self::$password,
+            self::$dbh = new PDO("mysql:host=" . DB_HOST . ";
+                                  dbname="     . DATABASE . ";
+                                  charset="    . DB_CHARSET . "", 
+                                  				 DB_USERNAME, 
+                                  				 DB_PASSWORD,
                                   // Return the number of found (matched) rows, 
                                   // not the number of changed rows.
                                   array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
@@ -716,18 +707,14 @@ class DB
      *                              with bound parameters.
      *
      * @param  string   $order      Optional parameter : you can specify the 
-     *                              ORDER BY clause.
+     *                              ORDER BY clause
      *
-     * @param  integer  $limit      Optional parameter : you can specify the 
-     *                              LIMIT clause.
-     *
-     * @param  integer  $offset     Optional parameter : you can specify the 
-     *                              OFFSET part of the LIMIT clause.
+     * @param  string   limit       Optional parameter : you can specify the 
+     *                              LIMIT clause
      *
      * @return object               Statement handle.
      */
-    public function get($columns, $where = null, $order = null, 
-                        $limit = null, $offset = '')
+    public static function get($columns, $where = null, $order = null, $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -772,8 +759,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                  . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "  . static::$table . "
                                           LIMIT " . self::$offset
                                                   . self::$limit . " ");
@@ -789,8 +775,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                     . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS ". self::$columns . "
                                           FROM "     . static::$table . "
                                           ORDER BY " . self::$order . "
                                           LIMIT "    . self::$offset 
@@ -834,8 +819,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                  . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "  . static::$table . "
                                           WHERE " . self::$where . "
                                           LIMIT " . self::$offset
@@ -853,8 +837,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                     . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "     . static::$table . "
                                           WHERE "    . self::$where . "
                                           ORDER BY " . self::$order . "
@@ -897,14 +880,10 @@ class DB
      *                              count() function to count the number of 
      *                              affected rows by select. See count() 
      *                              function.
-     *
-     * @param  integer  $offset     Optional parameter : you can specify the 
-     *                              OFFSET part of the LIMIT clause.
      *                              
      * @return object               Statement handle.
      */
-    public static function getAll($where = null, $order = null, 
-                                  $limit = null, $offset = '')
+    public static function getAll($where = null, $order = null, $limit = null, $offset = '')
     {
         // checks to see which optional parameters user has submitted, 
         // and assigns them appropriate values.
@@ -1052,11 +1031,11 @@ class DB
      *                              $columns = 'id, name';
      *
      * @param  integer  $id         Required parameter : you need to pass the 
-     *                              id as a criteria for selection.
+     *                              id as a criteria for selection
      *
-     * @return object               Statement handle.
+     * @return object               Statement handle
      */
-    public function getById($columns = null, $id = null)
+    public static function getById($columns = null, $id = null)
     {
         // checks to see if user has submitted columns and gets the id value.
         self::getId($columns, $id);
@@ -1130,19 +1109,15 @@ class DB
      *                              with bound parameters.
      *
      * @param  string   $order      Optional parameter : you can specify the 
-     *                              ORDER BY clause.
+     *                              ORDER BY clause
      *
      * @param  string   $limit      Optional parameter : you can specify the 
-     *                              LIMIT clause.
-     *
-     * @param  integer  $offset     Optional parameter : you can specify the 
-     *                              OFFSET part of the LIMIT clause.
+     *                              LIMIT clause
      *
      * @return object               Statement handle.
      */
-    public function getGrouped($columns = "",  $where = null, $group = null, 
-                               $having = null, $order = null, 
-                               $limit = null,  $offset = '')
+    public static function getGrouped($columns = "", $where = null, $group = null, $having = null, $order = null, 
+                                      $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -1483,7 +1458,7 @@ class DB
      *                              $columns = 'id, name'; $columns = '*';
      *
      * @param  string   $on         Required parameter : This is the ON part of 
-     *                              the join query. You write it as a string. 
+     *                              the join query. You write it as an string. 
      *                              Example: 'country.code = 
      *                              country_language.country_code';
      *
@@ -1500,18 +1475,14 @@ class DB
      *                              with bound parameters.
      *
      * @param  string   $order      Optional parameter : you can specify the 
-     *                              ORDER BY clause.
+     *                              ORDER BY clause
      *
      * @param  string   $limit      Optional parameter : you can specify the 
-     *                              LIMIT clause.
-     *
-     * @param  integer  $offset     Optional parameter : you can specify the 
-     *                              OFFSET part of the LIMIT clause.
+     *                              LIMIT clause
      *
      * @return object               Statement handle.
      */
-    public function join($table, $columns, $on, $where = null, 
-                         $order = null, $limit = null, $offset = '')
+    public static function join($table, $columns, $on, $where = null, $order = null, $limit = null, $offset = '')
     {
         // builds left and right table names and JOIN type
         self::buildTables($table);
@@ -1711,18 +1682,17 @@ class DB
      *                              with % signs on both side of the search term.
      *
      * @param  string   $order      Optional parameter : you can specify the 
-     *                              ORDER BY clause.
+     *                              ORDER BY clause
      *
      * @param  integer  $limit      Optional parameter : you can specify the 
-     *                              LIMIT clause.
+     *                              LIMIT clause
      *
      * @param  integer  $offset     Optional parameter : you can specify the 
-     *                              OFFSET part of the LIMIT clause.
+     *                              offset part of the LIMIT clause
      *
      * @return object               Statement handle.
      */
-    public function search($columns, $where, $order = null, 
-                           $limit = null, $offset = '')
+    public static function search($columns, $where, $order = null, $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -1876,7 +1846,7 @@ class DB
      *
      * @return integer             Number of rows affected by SELECT statements.
      */
-    public function count()
+    public static function count()
     {
         self::$sth = self::query("SELECT FOUND_ROWS()");
         self::$sth->execute();
@@ -1899,8 +1869,7 @@ class DB
     /**
      * Deletes the row by provided $id or custom WHERE clause.
      *
-     * @param  array    $where      Optional parameter : 
-     *                              In case you are doing deletion using this 
+     * @param  array    $where      In case you are doing deletion using this 
      *                              parameter, you need to supply your condition 
      *                              as an associative array where array key will 
      *                              contain column name and operator, and array 
@@ -1912,15 +1881,14 @@ class DB
      *                              deleting by $id, $where parameter should NOT 
      *                              be specified.
      *
-     * @param  integer  $id         Optional parameter : 
-     *                              In case you are doing deletion by $id, you 
+     * @param  integer  $id         In case you are doing deletion by $id, you 
      *                              need to pass the id as deletion criteria.
      *                              If you are using custom $where, you should 
      *                              NOT specify the $id.
      *
      * @return integer              Number of rows affected by deletion.
      */
-    public function delete($where = null, $id = null)
+    public static function delete($where = null, $id = null)
     {
         // builds WHERE condition
         self::buildWhereDelete($where, $id);
@@ -1929,7 +1897,7 @@ class DB
         if (is_null(self::$where))
         {
             self::$sth = self::query("DELETE 
-                                      FROM " . static::$table . "
+            						  FROM " . static::$table . "
                                       WHERE  id = :id 
                                       LIMIT  1 ");
 
@@ -1937,12 +1905,11 @@ class DB
             self::$sth->execute();
             self::$lastQuery = self::$sth;
             return self::$sth->rowCount();
-        } 
-        // we are deleting using custom WHERE
+        } // we are deleting using custom WHERE
         else
         {
             self::$sth = self::query("DELETE 
-                                      FROM "   . static::$table . "
+            						  FROM "   . static::$table . "
                                       WHERE "  . self::$where . "
                                       LIMIT 1 ");
  
@@ -1962,7 +1929,7 @@ class DB
      *
      * @return integer              Number of rows affected by deletion.
      */
-    public function deleteAll()
+    public static function deleteAll()
     {
         self::$sth = self::query("DELETE FROM " . static::$table . " ");
         self::$sth->execute();
@@ -1990,7 +1957,7 @@ class DB
      *
      * @return integer              Number of affected rows, if any.
      */
-    protected function create($columns)
+    protected static function create($columns)
     {
         // sets the column names
         $columnNames = join(", ", array_keys($columns));
@@ -2030,7 +1997,7 @@ class DB
      *
      * @return int                  Number of affected rows, if any.
      */
-    protected function update($columns, $condition)
+    protected static function update($columns, $condition)
     {
         // build columns as an string with comma-separated values
         self::buildUpdate($columns);
@@ -2082,7 +2049,7 @@ class DB
      *                              inside $username.
      * @return boolean
      */
-    public function save(array $columns, $condition = null)
+    public static function save(array $columns, $condition = null)
     {
         // $condition is not specified that means creation should be done
         if (is_null($condition))
@@ -2120,7 +2087,7 @@ class DB
 
 //------------------------------------------------------------------------------
 
-    /**
+	/**
      ***************************************************************************
      * DB abstraction functions - helper method ( display query )
      **************************************************************************/
@@ -2134,17 +2101,17 @@ class DB
      * Please use only for debug/learn purpose. 
      * You should never display this information to end users.
      *
-     * @provide string      Query string.
+     * @provide string 		Query string.
      */
-    public static function showQuery()
-    {
-        echo "<hr>";
-        echo "<code>";
-        var_dump(self::$lastQuery);
-        echo "</code>";
-        echo "<br>";
-        echo "<hr>";
-    } 
+	public static function showQuery()
+	{
+		echo "<hr>";
+		echo "<pre>";
+		var_dump(self::$lastQuery);
+		echo "</pre>";
+		echo "<br>";
+		echo "<hr>";
+	} 
 }
 
 //------------------------------------------------------------------------------
