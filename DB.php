@@ -50,7 +50,6 @@ class DB
 
     /**
      * Initializes the PDO database connection
-     * You can set you database params in some config file like in example provided.
      */
     function __construct()
     {
@@ -227,8 +226,7 @@ class DB
      * @provide mixed               Parts of the query that user has 
      *                              submitted with getGroup().
      */
-    private static function checkGroup($where, $group, $having, 
-                                       $order, $limit, $offset)
+    private static function checkGroup($where, $group, $having, $order, $limit, $offset)
     {
         // there is no WHERE clause
         if (!is_array($where))
