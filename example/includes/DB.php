@@ -25,14 +25,6 @@
 
 class DB
 {
-    //----- your database setup -----//
-    private static $host = 'localhost';
-    private static $database = 'example_db';
-    private static $charset = 'utf8';
-    private static $username = 'root';
-    private static $password = 'root';
-    //-------------------------------//
-    
     //-----------------------------------------------------------------------
     // Class specific properties, modify only if you know what you are doing.
     //-----------------------------------------------------------------------
@@ -64,11 +56,11 @@ class DB
         // tries to connect
         try
         {
-            self::$dbh = new PDO("mysql:host=" . self::$host . ";
-                                  dbname="     . self::$database . ";
-                                  charset="    . self::$charset . "", 
-                                  				 self::$username, 
-                                  				 self::$password,
+            self::$dbh = new PDO("mysql:host=" . DB_HOST . ";
+                                  dbname="     . DATABASE . ";
+                                  charset="    . DB_CHARSET . "", 
+                                  		 		 DB_USERNAME, 
+                                  		 		 DB_PASSWORD,
                                   // Return the number of found (matched) rows, 
                                   // not the number of changed rows.
                                   array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
@@ -234,8 +226,7 @@ class DB
      * @provide mixed               Parts of the query that user has 
      *                              submitted with getGroup().
      */
-    private static function checkGroup($where, $group, $having, 
-                                       $order, $limit, $offset)
+    private static function checkGroup($where, $group, $having, $order, $limit, $offset)
     {
         // there is no WHERE clause
         if (!is_array($where))
@@ -721,8 +712,7 @@ class DB
      *
      * @return object               Statement handle.
      */
-    public function get($columns, $where = null, $order = null, 
-                        $limit = null, $offset = '')
+    public static function get($columns, $where = null, $order = null, $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -767,8 +757,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                  . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "  . static::$table . "
                                           LIMIT " . self::$offset
                                                   . self::$limit . " ");
@@ -784,8 +773,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                     . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS ". self::$columns . "
                                           FROM "     . static::$table . "
                                           ORDER BY " . self::$order . "
                                           LIMIT "    . self::$offset 
@@ -829,8 +817,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                  . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "  . static::$table . "
                                           WHERE " . self::$where . "
                                           LIMIT " . self::$offset
@@ -848,8 +835,7 @@ class DB
                     self::$offset = $offset . ',';
                 }
 
-                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS "
-                                                     . self::$columns . "
+                self::$sth = self::query("SELECT SQL_CALC_FOUND_ROWS " . self::$columns . "
                                           FROM "     . static::$table . "
                                           WHERE "    . self::$where . "
                                           ORDER BY " . self::$order . "
@@ -895,8 +881,7 @@ class DB
      *                              
      * @return object               Statement handle.
      */
-    public static function getAll($where = null, $order = null, 
-                                  $limit = null, $offset = '')
+    public static function getAll($where = null, $order = null, $limit = null, $offset = '')
     {
         // checks to see which optional parameters user has submitted, 
         // and assigns them appropriate values.
@@ -1048,7 +1033,7 @@ class DB
      *
      * @return object               Statement handle
      */
-    public function getById($columns = null, $id = null)
+    public static function getById($columns = null, $id = null)
     {
         // checks to see if user has submitted columns and gets the id value.
         self::getId($columns, $id);
@@ -1129,9 +1114,8 @@ class DB
      *
      * @return object               Statement handle.
      */
-    public function getGrouped($columns = "", $where = null, $group = null, 
-                               $having = null, $order = null, 
-                               $limit = null, $offset = '')
+    public static function getGrouped($columns = "", $where = null, $group = null, $having = null, $order = null, 
+                                      $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -1496,8 +1480,7 @@ class DB
      *
      * @return object               Statement handle.
      */
-    public function join($table, $columns, $on, $where = null, 
-                         $order = null, $limit = null, $offset = '')
+    public static function join($table, $columns, $on, $where = null, $order = null, $limit = null, $offset = '')
     {
         // builds left and right table names and JOIN type
         self::buildTables($table);
@@ -1707,8 +1690,7 @@ class DB
      *
      * @return object               Statement handle.
      */
-    public function search($columns, $where, $order = null, 
-                           $limit = null, $offset = '')
+    public static function search($columns, $where, $order = null, $limit = null, $offset = '')
     {
         // checks to see if submitted $columns is an array or string.
         self::checkColumns($columns);
@@ -1862,7 +1844,7 @@ class DB
      *
      * @return integer             Number of rows affected by SELECT statements.
      */
-    public function count()
+    public static function count()
     {
         self::$sth = self::query("SELECT FOUND_ROWS()");
         self::$sth->execute();
@@ -1904,7 +1886,7 @@ class DB
      *
      * @return integer              Number of rows affected by deletion.
      */
-    public function delete($where = null, $id = null)
+    public static function delete($where = null, $id = null)
     {
         // builds WHERE condition
         self::buildWhereDelete($where, $id);
@@ -1945,7 +1927,7 @@ class DB
      *
      * @return integer              Number of rows affected by deletion.
      */
-    public function deleteAll()
+    public static function deleteAll()
     {
         self::$sth = self::query("DELETE FROM " . static::$table . " ");
         self::$sth->execute();
@@ -1973,7 +1955,7 @@ class DB
      *
      * @return integer              Number of affected rows, if any.
      */
-    protected function create($columns)
+    protected static function create($columns)
     {
         // sets the column names
         $columnNames = join(", ", array_keys($columns));
@@ -2013,7 +1995,7 @@ class DB
      *
      * @return int                  Number of affected rows, if any.
      */
-    protected function update($columns, $condition)
+    protected static function update($columns, $condition)
     {
         // build columns as an string with comma-separated values
         self::buildUpdate($columns);
@@ -2065,7 +2047,7 @@ class DB
      *                              inside $username.
      * @return boolean
      */
-    public function save(array $columns, $condition = null)
+    public static function save(array $columns, $condition = null)
     {
         // $condition is not specified that means creation should be done
         if (is_null($condition))
@@ -2122,9 +2104,9 @@ class DB
 	public static function showQuery()
 	{
 		echo "<hr>";
-		echo "<code>";
+		echo "<pre>";
 		var_dump(self::$lastQuery);
-		echo "</code>";
+		echo "</pre>";
 		echo "<br>";
 		echo "<hr>";
 	} 
