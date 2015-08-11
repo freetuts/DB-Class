@@ -663,8 +663,7 @@ class DB
      *********/
 
     /**
-     * Query by SQL function. You have to pass the raw SQL to this function 
-     * using the $query parameter.
+     * Helper method responsible for preparing queries made by wrappers.
      *
      * @param  string   $query      Sql query.
      *
@@ -673,6 +672,19 @@ class DB
     public static function query($query)
     {
         return self::$dbh->prepare($query);
+    }
+
+    /**
+     * Query by SQL function. You have to pass the raw SQL to this function using the $sql parameter.
+     *
+     * @param  mixed   $sql      Sql query.
+     *
+     * @return collection
+     */
+    public static function queryBySql($sql)
+    {
+        self::$sth = self::query($sql);
+        return self::execute();
     }
 
     /*********
