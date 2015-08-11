@@ -59,8 +59,8 @@ class DB
             self::$dbh = new PDO("mysql:host=" . DB_HOST . ";
                                   dbname="     . DATABASE . ";
                                   charset="    . DB_CHARSET . "", 
-                                  		 		 DB_USERNAME, 
-                                  		 		 DB_PASSWORD,
+                                  				 DB_USERNAME, 
+                                  				 DB_PASSWORD,
                                   // Return the number of found (matched) rows, 
                                   // not the number of changed rows.
                                   array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
@@ -663,8 +663,7 @@ class DB
      *********/
 
     /**
-     * Query by SQL function. You have to pass the raw SQL to this function 
-     * using the $query parameter.
+     * Helper method responsible for preparing queries made by wrappers.
      *
      * @param  string   $query      Sql query.
      *
@@ -673,6 +672,19 @@ class DB
     public static function query($query)
     {
         return self::$dbh->prepare($query);
+    }
+
+    /**
+     * Query by SQL function. You have to pass the raw SQL to this function using the $sql parameter.
+     *
+     * @param  mixed   $sql      Sql query.
+     *
+     * @return collection
+     */
+    public static function queryBySql($sql)
+    {
+        self::$sth = self::query($sql);
+        return self::execute();
     }
 
     /*********
