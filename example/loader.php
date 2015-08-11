@@ -24,7 +24,7 @@
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR); 
  
 // Site root path for the file system
-defined('SITE_ROOT') ? null : define('SITE_ROOT', $_SERVER["DOCUMENT_ROOT"].DS.'db_class_example'.DS);
+defined('SITE_ROOT') ? null : define('SITE_ROOT', $_SERVER["DOCUMENT_ROOT"].DS.'example'.DS);
 
 // Path to "includes" folder
 defined('INCLUDES') ? null : define('INCLUDES', SITE_ROOT.'includes'.DS);
@@ -35,8 +35,9 @@ defined('MODELS') ? null : define('MODELS', SITE_ROOT.'models'.DS);
 //----------------------------------------------------------------------------------------------------------------------
 
 /**
- * Database loader
+ * Config and Database loader
  */
+require_once(INCLUDES.'config.php');
 require_once(INCLUDES.'DB.php');
  
 //----------------------------------------------------------------------------------------------------------------------
