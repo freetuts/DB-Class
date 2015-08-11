@@ -24,6 +24,16 @@ class News extends DB
      **************************************************************************/
 
     /**
+     * queryBySql() example
+     */
+    public static function custom()
+    {
+        $sql = "SELECT title, body, note FROM news LIMIT 2";
+
+        return News::queryBySql($sql);
+    }
+
+    /**
      * get() example
      */
     public static function getNews()
